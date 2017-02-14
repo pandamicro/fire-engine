@@ -399,27 +399,44 @@ cc.Director.EVENT_AFTER_SCENE_LAUNCH = "director_after_scene_launch";
 cc.Director.EVENT_COMPONENT_UPDATE = 'director_component_update';
 cc.Director.EVENT_COMPONENT_LATE_UPDATE = 'director_component_late_update';
 
-cc.eventManager.addCustomListener(cc.Director.EVENT_BEFORE_UPDATE, function () {
-    var dt = cc.director.getDeltaTime();
-    // Call start for new added components
-    cc.director.emit(cc.Director.EVENT_BEFORE_UPDATE);
-    // Update for components
-    cc.director.emit(cc.Director.EVENT_COMPONENT_UPDATE, dt);
-});
-cc.eventManager.addCustomListener(cc.Director.EVENT_AFTER_UPDATE, function () {
-    var dt = cc.director.getDeltaTime();
-    // Late update for components
-    cc.director.emit(cc.Director.EVENT_COMPONENT_LATE_UPDATE, dt);
-    // User can use this event to do things after update
-    cc.director.emit(cc.Director.EVENT_AFTER_UPDATE);
-    // Destroy entities that have been removed recently
-    cc.Object._deferredDestroy();
-    
-    cc.director.emit(cc.Director.EVENT_BEFORE_VISIT, this);
-});
-cc.eventManager.addCustomListener(cc.Director.EVENT_AFTER_VISIT, function () {
-    cc.director.emit(cc.Director.EVENT_AFTER_VISIT, this);
-});
-cc.eventManager.addCustomListener(cc.Director.EVENT_AFTER_DRAW, function () {
-    cc.director.emit(cc.Director.EVENT_AFTER_DRAW, this);
-});
+cc.director._beforeUpdateListener = {
+    eventName: cc.Director.EVENT_BEFORE_UPDATE,
+    callback: function () {
+        var dt = cc.director.getDeltaTime();
+        // Call start for new added components
+        cc.director.emit(cc.Director.EVENT_BEFORE_UPDATE);
+        // Update for components
+        cc.director.emit(cc.Director.EVENT_COMPONENT_UPDATE, dt);
+    }
+};
+cc.director._afterUpdateListener = {
+    eventName: cc.Director.EVENT_AFTER_UPDATE,
+    callback: function () {
+        var dt = cc.director.getDeltaTime();
+        // Late update for components
+        cc.director.emit(cc.Director.EVENT_COMPONENT_LATE_UPDATE, dt);
+        // User can use this event to do things after update
+        cc.director.emit(cc.Director.EVENT_AFTER_UPDATE);
+        // Destroy entities that have been removed recently
+        cc.Object._deferredDestroy();
+        
+        cc.director.emit(cc.Director.EVENT_BEFORE_VISIT, this);
+    }
+};
+cc.director._afterVisitListener = {
+    eventName: cc.Director.EVENT_AFTER_VISIT,
+    callback: function () {
+        cc.director.emit(cc.Director.EVENT_AFTER_VISIT, this);
+    }
+};
+cc.director._afterDrawListener = {
+    eventName: cc.Director.EVENT_AFTER_DRAW,
+    callback: function () {
+        cc.director.emit(cc.Director.EVENT_AFTER_DRAW, this);
+    }
+};
+
+cc.eventManager.addEventListenerWithFixedPriority(cc.EventListener.create(cc.director._beforeUpdateListener), 0);
+cc.eventManager.addEventListenerWithFixedPriority(cc.EventListener.create(cc.director._afterUpdateListener), 0);
+cc.eventManager.addEventListenerWithFixedPriority(cc.EventListener.create(cc.director._afterVisitListener), 0);
+cc.eventManager.addEventListenerWithFixedPriority(cc.EventListener.create(cc.director._afterDrawListener), 0);
