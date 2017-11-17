@@ -122,6 +122,7 @@ var View = cc._Class.extend({
         _t._initFrameSize();
 
         var w = cc.game.canvas.width, h = cc.game.canvas.height;
+        cc.game.canvas.style['transform-origin'] = '0px 0px 0px';
         // resolution size, it is the size appropriate for the app resources.
         _t._designResolutionSize = cc.size(w, h);
         _t._originalDesignResolutionSize = cc.size(w, h);
@@ -1015,6 +1016,10 @@ View._getInstance = function () {
  * @class ContainerStrategy
  */
 cc.ContainerStrategy = cc._Class.extend(/** @lends cc.ContainerStrategy# */{
+    ctor: function () {
+        this.width = 0;
+        this.height = 0;
+    },
     /**
      * Manipulation before appling the strategy
      * @method preApply
@@ -1042,23 +1047,17 @@ cc.ContainerStrategy = cc._Class.extend(/** @lends cc.ContainerStrategy# */{
     },
 
     _setupContainer: function (view, w, h) {
-        var locCanvas = cc.game.canvas, locContainer = cc.game.container;
+        var locContainer = cc.game.container;
         if (cc.sys.os === cc.sys.OS_ANDROID) {
             document.body.style.width = (view._isRotated ? h : w) + 'px';
             document.body.style.height = (view._isRotated ? w : h) + 'px';
         }
 
+        this.width = w;
+        this.height = h;
         // Setup style
-        locContainer.style.width = locCanvas.style.width = w + 'px';
-        locContainer.style.height = locCanvas.style.height = h + 'px';
-        // Setup pixel ratio for retina display
-        var devicePixelRatio = view._devicePixelRatio = 1;
-        if (view.isRetinaEnabled())
-            devicePixelRatio = view._devicePixelRatio = Math.min(2, window.devicePixelRatio || 1);
-        // Setup canvas
-        locCanvas.width = w * devicePixelRatio;
-        locCanvas.height = h * devicePixelRatio;
-        cc._renderContext.resetCache && cc._renderContext.resetCache();
+        locContainer.style.width = w + 'px';
+        locContainer.style.height = h + 'px';
     },
 
     _fixContainer: function () {
@@ -1092,12 +1091,28 @@ cc.ContentStrategy = cc._Class.extend(/** @lends cc.ContentStrategy# */{
     },
 
     _buildResult: function (containerW, containerH, contentW, contentH, scaleX, scaleY) {
-        // Makes content fit better the canvas
-        Math.abs(containerW - contentW) < 2 && (contentW = containerW);
-        Math.abs(containerH - contentH) < 2 && (contentH = containerH);
+        // // Makes content fit better the canvas
+        // Math.abs(containerW - contentW) < 2 && (contentW = containerW);
+        // Math.abs(containerH - contentH) < 2 && (contentH = containerH);
 
-        var viewport = cc.rect(Math.round((containerW - contentW) / 2),
-                               Math.round((containerH - contentH) / 2),
+        var locCanvas = cc.game.canvas;
+        var view = cc.view;
+        locCanvas.style.width = contentW + 'px';
+        locCanvas.style.height = contentH + 'px';
+        if (scaleX !== 1 || scaleY !== 1) {
+            locCanvas.style.transform = 'scale(' + scaleX + ',' + scaleY + ')';
+        }
+        // Setup pixel ratio for retina display
+        var devicePixelRatio = view._devicePixelRatio = 1;
+        if (view.isRetinaEnabled())
+            devicePixelRatio = view._devicePixelRatio = Math.min(2, window.devicePixelRatio || 1);
+        // Setup canvas
+        locCanvas.width = contentW * devicePixelRatio;
+        locCanvas.height = contentH * devicePixelRatio;
+        cc._renderContext.resetCache && cc._renderContext.resetCache();
+
+        var viewport = cc.rect(Math.round((containerW / scaleX - contentW) / 2),
+                               Math.round((containerH / scaleY - contentH) / 2),
                                contentW, contentH);
 
         // Translate the content
@@ -1106,7 +1121,7 @@ cc.ContentStrategy = cc._Class.extend(/** @lends cc.ContentStrategy# */{
             //cc._renderContext.translate(viewport.x, viewport.y + contentH);
         }
 
-        this._result.scale = [scaleX, scaleY];
+        this._result.scale = [1, 1];
         this._result.viewport = viewport;
         return this._result;
     },
@@ -1253,47 +1268,40 @@ cc.ContentStrategy = cc._Class.extend(/** @lends cc.ContentStrategy# */{
 
 // Content scale strategys
     var ExactFit = cc.ContentStrategy.extend({
-        apply: function (view, designedResolution) {
-            var containerW = cc.game.canvas.width, containerH = cc.game.canvas.height,
-                scaleX = containerW / designedResolution.width, scaleY = containerH / designedResolution.height;
+        apply: function (view, designedResolution, containerW, containerH) {
+            var contentW = designedResolution.width, contentH = designedResolution.height,
+                scaleX = containerW / contentW, scaleY = containerH / contentH;
 
-            return this._buildResult(containerW, containerH, containerW, containerH, scaleX, scaleY);
+            return this._buildResult(containerW, containerH, contentW, contentH, scaleX, scaleY);
         }
     });
 
     var ShowAll = cc.ContentStrategy.extend({
-        apply: function (view, designedResolution) {
-            var containerW = cc.game.canvas.width, containerH = cc.game.canvas.height,
-                designW = designedResolution.width, designH = designedResolution.height,
-                scaleX = containerW / designW, scaleY = containerH / designH, scale = 0,
-                contentW, contentH;
+        apply: function (view, designedResolution, containerW, containerH) {
+            var designW = designedResolution.width, designH = designedResolution.height,
+                scaleX = containerW / designW, scaleY = containerH / designH, scale = 1;
 
-            scaleX < scaleY ? (scale = scaleX, contentW = containerW, contentH = designH * scale)
-                : (scale = scaleY, contentW = designW * scale, contentH = containerH);
+            scale = scaleX < scaleY ? scaleX : scaleY;
 
-            return this._buildResult(containerW, containerH, contentW, contentH, scale, scale);
+            return this._buildResult(containerW, containerH, designW, designH, scale, scale);
         }
     });
 
     var NoBorder = cc.ContentStrategy.extend({
-        apply: function (view, designedResolution) {
-            var containerW = cc.game.canvas.width, containerH = cc.game.canvas.height,
-                designW = designedResolution.width, designH = designedResolution.height,
-                scaleX = containerW / designW, scaleY = containerH / designH, scale,
-                contentW, contentH;
+        apply: function (view, designedResolution, containerW, containerH) {
+            var designW = designedResolution.width, designH = designedResolution.height,
+                scaleX = containerW / designW, scaleY = containerH / designH, scale;
 
-            scaleX < scaleY ? (scale = scaleY, contentW = designW * scale, contentH = containerH)
-                : (scale = scaleX, contentW = containerW, contentH = designH * scale);
+            scale = scaleX < scaleY ? scaleY : scaleX;
 
-            return this._buildResult(containerW, containerH, contentW, contentH, scale, scale);
+            return this._buildResult(containerW, containerH, designW, designH, scale, scale);
         }
     });
 
     var FixedHeight = cc.ContentStrategy.extend({
-        apply: function (view, designedResolution) {
-            var containerW = cc.game.canvas.width, containerH = cc.game.canvas.height,
-                designH = designedResolution.height, scale = containerH / designH,
-                contentW = containerW, contentH = containerH;
+        apply: function (view, designedResolution, containerW, containerH) {
+            var designH = designedResolution.height, scale = containerH / designH,
+                contentW = containerW / scale, contentH = designH;
 
             return this._buildResult(containerW, containerH, contentW, contentH, scale, scale);
         },
@@ -1304,10 +1312,9 @@ cc.ContentStrategy = cc._Class.extend(/** @lends cc.ContentStrategy# */{
     });
 
     var FixedWidth = cc.ContentStrategy.extend({
-        apply: function (view, designedResolution) {
-            var containerW = cc.game.canvas.width, containerH = cc.game.canvas.height,
-                designW = designedResolution.width, scale = containerW / designW,
-                contentW = containerW, contentH = containerH;
+        apply: function (view, designedResolution, containerW, containerH) {
+            var designW = designedResolution.width, scale = containerW / designW,
+                contentW = designW, contentH = containerH / scale;
 
             return this._buildResult(containerW, containerH, contentW, contentH, scale, scale);
         },
@@ -1376,7 +1383,7 @@ cc.ResolutionPolicy = cc._Class.extend(/** @lends cc.ResolutionPolicy# */{
      */
     apply: function (view, designedResolution) {
         this._containerStrategy.apply(view, designedResolution);
-        return this._contentStrategy.apply(view, designedResolution);
+        return this._contentStrategy.apply(view, designedResolution, this._containerStrategy.width, this._containerStrategy.height);
     },
 
     /**

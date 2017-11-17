@@ -1678,7 +1678,7 @@ cc.macro = {
      *
      * @property {Number} FIX_ARTIFACTS_BY_STRECHING_TEXEL_TMX
      */
-    FIX_ARTIFACTS_BY_STRECHING_TEXEL_TMX: 1,
+    FIX_ARTIFACTS_BY_STRECHING_TEXEL_TMX: 0,
 
     /**
      * Position of the FPS (Default: 0,0 (bottom-left corner))<br/>
