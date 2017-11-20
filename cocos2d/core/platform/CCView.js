@@ -1097,15 +1097,15 @@ cc.ContentStrategy = cc._Class.extend(/** @lends cc.ContentStrategy# */{
 
         var locCanvas = cc.game.canvas;
         var view = cc.view;
-        locCanvas.style.width = contentW + 'px';
-        locCanvas.style.height = contentH + 'px';
+        locCanvas.style.width = Math.floor(contentW) + 'px';
+        locCanvas.style.height = Math.floor(contentH) + 'px';
         if (scaleX !== 1 || scaleY !== 1) {
             locCanvas.style.transform = 'scale(' + scaleX + ',' + scaleY + ')';
         }
         // Setup pixel ratio for retina display
         var devicePixelRatio = view._devicePixelRatio = 1;
-        if (view.isRetinaEnabled())
-            devicePixelRatio = view._devicePixelRatio = Math.min(2, window.devicePixelRatio || 1);
+        // if (view.isRetinaEnabled())
+        //     devicePixelRatio = view._devicePixelRatio = Math.min(2, window.devicePixelRatio || 1);
         // Setup canvas
         locCanvas.width = contentW * devicePixelRatio;
         locCanvas.height = contentH * devicePixelRatio;
