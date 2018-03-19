@@ -286,8 +286,10 @@ var Texture2D = cc.Class({
     },
 
     /**
+     * !#en
      * Get renderer texture implementation object
      * extended from renderEngine.TextureAsset
+     * !#zh  返回渲染对象贴图
      * @method getImpl
      */
     getImpl () {
@@ -371,7 +373,9 @@ var Texture2D = cc.Class({
     },
 
     /**
+     * !#en
      * Init with HTML element.
+     * !#zh 初始化页面元素
      * @method initWithElement
      * @param {HTMLImageElement|HTMLCanvasElement} element
      * @example
@@ -398,7 +402,9 @@ var Texture2D = cc.Class({
     },
 
     /**
+     * !#en
      * Intializes with a texture2d with data in Uint8Array.
+     * !#zh 用一个Unit8数组记录2d贴图进行初始化
      * @method initWithData
      * @param {TypedArray} data
      * @param {Number} pixelFormat
@@ -421,7 +427,9 @@ var Texture2D = cc.Class({
     },
 
     /**
+     * !#en
      * HTMLElement Object getter, available only on web.
+     * !#zh 获取页面元素对象,只能在Web模式下获得
      * In most case, it will return null, because we are recycling the dom image element for better loading performance and lower image cache memory usage.
      * @method getHtmlElementObj
      * @return {HTMLImageElement|HTMLCanvasElement}
@@ -449,7 +457,9 @@ var Texture2D = cc.Class({
     },
 
     /**
+     * !#en
      * Pixel format of the texture.
+     * !#zh 获取纹理的像素格式
      * @method getPixelFormat
      * @return {Number}
      */
@@ -459,8 +469,11 @@ var Texture2D = cc.Class({
     },
 
     /**
+     * !#en
      * Whether or not the texture has their Alpha premultiplied,
      * support only in WebGl rendering mode.
+     * !#zh 纹理是否含有左通道
+     * 仅在支持WebGL渲染模式下使用
      * @method hasPremultipliedAlpha
      * @return {Boolean}
      */
@@ -469,7 +482,10 @@ var Texture2D = cc.Class({
     },
 
     /**
+     * !#en
      * Whether or not use mipmap, support only in WebGl rendering mode.
+     * !#zh 是否使用mipmap
+     * 仅在支持WebGL渲染模式下使用
      * @method hasMipmap
      * @return {Boolean}
      */
@@ -478,7 +494,9 @@ var Texture2D = cc.Class({
     },
 
     /**
+     * !#en
      * Handler of texture loaded event.
+     * !#zh 贴图加载事件处理器
      * @method handleLoadedTexture
      * @param {Boolean} [premultiplied]
      */
@@ -516,7 +534,9 @@ var Texture2D = cc.Class({
     },
 
     /**
+     * !#en
      * Description of cc.Texture2D.
+     * !#zh cc.Texture2D描述
      * @method description
      * @returns {String}
      */
@@ -525,7 +545,9 @@ var Texture2D = cc.Class({
     },
 
     /**
+     * !#en
      * Release texture, please use destroy instead.
+     * !#zh 释放纹理,请使用 destroy 替代
      * @method releaseTexture
      * @deprecated
      */
@@ -567,8 +589,10 @@ var Texture2D = cc.Class({
     },
 
     /**
+     * !#en
      * Sets the flipY options
      * supported only in native or WebGl rendering mode
+     * !#zh 设置绕Y轴旋转
      * @method setFlipY
      * @param {Boolean} flipY
      */
@@ -581,8 +605,10 @@ var Texture2D = cc.Class({
     },
 
     /**
+     * !#en
      * Sets the premultiply alpha options
      * supported only in native or WebGl rendering mode
+     * !#zh 设置 premultuply alpha
      * @method setPremultiplyAlpha
      * @param {Boolean} premultiply
      */
@@ -595,8 +621,10 @@ var Texture2D = cc.Class({
     },
     
     /**
+     * !#en
      * Sets whether generate mipmaps for the texture
      * supported only in native or WebGl rendering mode
+     * !#zh 是否为贴图设置生成mipmaps
      * @method setMipmap
      * @param {Boolean} mipmap
      */
