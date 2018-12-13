@@ -420,6 +420,8 @@ let Camera = cc.Class({
             camera.setColor(0, 0, 0, 0);
 
             let node = new cc.Node();
+            // avoid js engine gc node in native.
+            camera._persistentNode_ = node;
             camera.setNode(node);
 
             repositionDebugCamera();
