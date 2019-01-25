@@ -399,7 +399,9 @@ let Mask = cc.Class({
             this._clearGraphics.node = new Node();
             this._clearGraphics._activateMaterial();
             this._clearGraphics.lineWidth = 0;
-            this._clearGraphics.rect(0, 0, cc.visibleRect.width, cc.visibleRect.height);
+            // Resolve the clear error of the mask
+            let scene = cc.director.getScene();
+            this._clearGraphics.rect(scene.x, scene.y, cc.visibleRect.width, cc.visibleRect.height);
             this._clearGraphics.fill();
             if (CC_JSB && CC_NATIVERENDERER) {
                 this._renderHandle.setNativeClearHandle(this._clearGraphics._renderHandle);

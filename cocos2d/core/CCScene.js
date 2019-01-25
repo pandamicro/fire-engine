@@ -97,10 +97,6 @@ cc.Scene = cc.Class({
             }
             else {
                 this._onBatchCreated();
-                // Temporary solution: Resolve the error of the mask on the native-renderer
-                this._trs[1] = 0;
-                this._trs[2] = 0;
-                this._trs[3] = 0;
             }
             this._inited = true;
         }
