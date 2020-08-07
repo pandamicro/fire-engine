@@ -220,8 +220,8 @@ class Component extends CCObject {
      * @zh 向节点添加一个指定类型的组件类，你还可以通过传入脚本的名称来添加组件。
      * @example
      * ```ts
-     * import { SpriteComponent } from 'cc';
-     * const sprite = node.addComponent(SpriteComponent);
+     * import { Sprite } from 'cc';
+     * const sprite = node.addComponent(Sprite);
      * ```
      */
     public addComponent<T extends Component> (classConstructor: Constructor<T>): T | null;
@@ -251,7 +251,7 @@ class Component extends CCObject {
      * ```ts
      * import { SpriteComponent } from 'cc';
      * // get sprite component.
-     * const sprite = node.getComponent(SpriteComponent);
+     * var sprite = node.getComponent(Sprite);
      * ```
      */
     public getComponent<T extends Component> (classConstructor: Constructor<T>): T | null;
@@ -280,8 +280,8 @@ class Component extends CCObject {
      * @zh 返回节点上指定类型的所有组件。
      * @example
      * ```ts
-     * import { SpriteComponent } from 'cc';
-     * const sprites = node.getComponents(SpriteComponent);
+     * import { Sprite } from 'cc';
+     * const sprites = node.getComponents(Sprite);
      * ```
      */
     public getComponents<T extends Component> (classConstructor: Constructor<T>): T[];
@@ -305,8 +305,8 @@ class Component extends CCObject {
      * @zh 递归查找所有子节点中第一个匹配指定类型的组件。
      * @example
      * ```ts
-     * import { SpriteComponent } from 'cc';
-     * const sprite = node.getComponentInChildren(SpriteComponent);
+     * import { Sprite } from 'cc';
+     * const sprite = node.getComponentInChildren(Sprite);
      * ```
      */
     public getComponentInChildren<T extends Component> (classConstructor: Constructor<T>): T | null;
@@ -330,8 +330,8 @@ class Component extends CCObject {
      * @zh 递归查找自身或所有子节点中指定类型的组件。
      * @example
      * ```ts
-     * import { SpriteComponent } from 'cc';
-     * const sprites = node.getComponentsInChildren(SpriteComponent);
+     * import { Sprite } from 'cc';
+     * const sprites = node.getComponentsInChildren(Sprite);
      * ```
      */
     public getComponentsInChildren<T extends Component> (classConstructor: Constructor<T>): T[];

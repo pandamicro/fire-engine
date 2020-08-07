@@ -28,23 +28,23 @@
  * @category component
  */
 
-import { Component } from './component';
-import { EventHandler } from './component-event-handler';
-import { ccclass, help, property, menu, executionOrder, tooltip, type } from '../data/class-decorator';
-import { Node } from '../scene-graph';
-import { convertUtils } from '../utils';
-import { CameraComponent } from '../3d';
-import { Vec3 } from '../math';
+import { Component } from '../../core/components/component';
+import { EventHandler } from '../../core/components/component-event-handler';
+import { ccclass, help, property, menu, executionOrder, tooltip, type } from '../../core/data/class-decorator';
+import { Node } from '../../core/scene-graph';
+import { convertUtils } from '../../core/utils';
+import { CameraComponent } from '../../core/3d';
+import { Vec3 } from '../../core/math';
 
 /**
  * @zh 3D 节点映射 UI 节点组件
  * 主要提供映射后的转换世界坐标以及模拟透视相机远近比。
  */
-@ccclass('cc.UICoordinateTrackerComponent')
-@help('i18n:cc.UICoordinateTrackerComponent')
-@menu('Components/UICoordinateTracker')
+@ccclass('cc.UICoordinateTracker')
+@help('i18n:cc.UICoordinateTracker')
+@menu('UI/UICoordinateTracker')
 @executionOrder(110)
-export class UICoordinateTrackerComponent extends Component {
+export class UICoordinateTracker extends Component {
     /**
      * @zh
      * 目标对象。
@@ -173,3 +173,5 @@ export class UICoordinateTrackerComponent extends Component {
         this._canMove = !!(this._camera && this._target);
     }
 }
+
+export { UICoordinateTracker as UICoordinateTrackerComponent };
