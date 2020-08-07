@@ -28,7 +28,7 @@
  * @category ui
  */
 
-import { InstanceMaterialType, UIRenderable } from '../../core/components/ui-base/ui-render-component';
+import { InstanceMaterialType, UIRenderable } from '../../core/components/ui-base/ui-renderable';
 import { ccclass, help, executionOrder, menu, property, tooltip, displayOrder, type, visible, override } from '../../core/data/class-decorator';
 import { clamp, Color, Mat4, Vec2, Vec3 } from '../../core/math';
 import { view, warnID } from '../../core/platform';
@@ -36,7 +36,7 @@ import visibleRect from '../../core/platform/visible-rect';
 import { UI } from '../../core/renderer/ui/ui';
 import { Node } from '../../core/scene-graph';
 import { ccenum } from '../../core/value-types/enum';
-import { Graphics } from './graphics-component';
+import { Graphics } from './graphics';
 import { TransformBit } from '../../core/scene-graph/node-enum';
 import { Game } from '../../core';
 import { legacyCC } from '../../core/global-exports';

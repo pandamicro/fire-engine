@@ -27,10 +27,10 @@
  * @category ui
  */
 
-import { ccclass, property, executeInEditMode, requireComponent, disallowMultiple, tooltip, type, displayOrder } from '../../../core/data/class-decorator';
-import { Color } from '../../../core/math';
-import { SystemEventType } from '../../../core/platform/event-manager/event-enum';
-import { ccenum } from '../../../core/value-types/enum';
+import { ccclass, property, executeInEditMode, requireComponent, disallowMultiple, tooltip, type, displayOrder } from '../../data/class-decorator';
+import { Color } from '../../math';
+import { SystemEventType } from '../../platform/event-manager/event-enum';
+import { ccenum } from '../../value-types/enum';
 import { builtinResMgr } from '../../3d/builtin/init';
 import { Material } from '../../assets';
 import { GFXBlendFactor } from '../../gfx/define';
@@ -42,7 +42,7 @@ import { UI } from '../../renderer/ui/ui';
 import { Node } from '../../scene-graph';
 import { TransformBit } from '../../scene-graph/node-enum';
 import { legacyCC } from '../../global-exports';
-import { UITransformComponent } from './ui-transform-component';
+import { UITransform } from './ui-transform';
 import { RenderableComponent } from '../../3d/framework/renderable-component';
 
 // hack
