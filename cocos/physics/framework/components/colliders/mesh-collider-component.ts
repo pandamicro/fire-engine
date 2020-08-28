@@ -10,7 +10,7 @@ import {
     property,
     type,
 } from '../../../../core/data/class-decorator';
-import { ColliderComponent } from './collider-component';
+import { Collider } from './collider-component';
 import { Mesh } from '../../../../core';
 import { ITrimeshShape } from '../../../spec/i-physics-shape';
 import { EDITOR, TEST } from 'internal:constants';
@@ -22,11 +22,11 @@ import { EColliderType } from '../../physics-enum';
  * @zh
  * 三角网格碰撞器。
  */
-@ccclass('cc.MeshColliderComponent')
-@help('i18n:cc.MeshColliderComponent')
+@ccclass('cc.MeshCollider')
+@help('i18n:cc.MeshCollider')
 @menu('Physics/MeshCollider')
 @executeInEditMode
-export class MeshColliderComponent extends ColliderComponent {
+export class MeshCollider extends Collider {
 
     /// PUBLIC PROPERTY GETTER\SETTER ///
 
@@ -83,3 +83,5 @@ export class MeshColliderComponent extends ColliderComponent {
         super(EColliderType.MESH);
     }
 }
+
+export { MeshCollider as MeshColliderComponent };

@@ -12,7 +12,7 @@ import {
     type,
 } from '../../../../core/data/class-decorator';
 import { Vec3 } from '../../../../core/math';
-import { ColliderComponent } from './collider-component';
+import { Collider } from './collider-component';
 import { IPlaneShape } from '../../../spec/i-physics-shape';
 import { EDITOR, TEST } from 'internal:constants';
 import { EColliderType } from '../../physics-enum';
@@ -23,11 +23,11 @@ import { EColliderType } from '../../physics-enum';
  * @zh
  * 静态平面碰撞器。
  */
-@ccclass('cc.PlaneColliderComponent')
-@help('i18n:cc.PlaneColliderComponent')
+@ccclass('cc.PlaneCollider')
+@help('i18n:cc.PlaneCollider')
 @menu('Physics/PlaneCollider(beta)')
 @executeInEditMode
-export class PlaneColliderComponent extends ColliderComponent {
+export class PlaneCollider extends Collider {
 
     /// PUBLIC PROPERTY GETTER\SETTER ///
 
@@ -89,5 +89,4 @@ export class PlaneColliderComponent extends ColliderComponent {
     constructor () {
         super(EColliderType.PLANE);
     }
-
 }

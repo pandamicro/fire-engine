@@ -455,7 +455,7 @@ export class AnimationState extends Playable {
 
     /**
      * @deprecated Since V1.1.1, animation states were no longer defined as event targets.
-     * To process animation events, use `AnimationComponent` instead.
+     * To process animation events, use `Animation` instead.
      */
     public emit (...args: any[]) {
         legacyCC.director.getAnimationManager().pushDelayEvent(this._emit, this, args);
@@ -463,7 +463,7 @@ export class AnimationState extends Playable {
 
     /**
      * @deprecated Since V1.1.1, animation states were no longer defined as event targets.
-     * To process animation events, use `AnimationComponent` instead.
+     * To process animation events, use `Animation` instead.
      */
     public on (type: string, callback: Function, target?: any) {
         if (this._target && this._target.isValid) {
@@ -475,7 +475,7 @@ export class AnimationState extends Playable {
 
     /**
      * @deprecated Since V1.1.1, animation states were no longer defined as event targets.
-     * To process animation events, use `AnimationComponent` instead.
+     * To process animation events, use `Animation` instead.
      */
     public once (type: string, callback: Function, target?: any) {
         if (this._target && this._target.isValid) {
@@ -487,7 +487,7 @@ export class AnimationState extends Playable {
 
     /**
      * @deprecated Since V1.1.1, animation states were no longer defined as event targets.
-     * To process animation events, use `AnimationComponent` instead.
+     * To process animation events, use `Animation` instead.
      */
     public off (type: string, callback: Function, target?: any) {
         if (this._target && this._target.isValid) {
