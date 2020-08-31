@@ -11,7 +11,7 @@ import { Material } from '../core/assets/material';
 import { ccclass, help, executeInEditMode, executionOrder, menu, property, tooltip, displayOrder, type, range, displayName, visible, formerlySerializedAs, override, radian } from '../core/data/class-decorator';
 import { Mat4, pseudoRandom, Quat, randomRangeInt, Vec2, Vec3 } from '../core/math';
 import { INT_MAX } from '../core/math/bits';
-import { Model } from '../core/renderer';
+import { scene } from '../core/renderer';
 import ColorOverLifetimeModule from './animator/color-overtime';
 import CurveRange, { Mode } from './animator/curve-range';
 import ForceOvertimeModule from './animator/force-overtime';
@@ -585,7 +585,7 @@ export class ParticleSystem extends RenderableComponent {
         this.processor!.onRebuildPSO(index, material);
     }
 
-    public _collectModels (): Model[] {
+    public _collectModels (): scene.Model[] {
         this._models.length = 0;
         this._models.push((this.processor as any)._model);
         if (this._trailModule && this._trailModule.enable && (this._trailModule as any)._trailModel) {

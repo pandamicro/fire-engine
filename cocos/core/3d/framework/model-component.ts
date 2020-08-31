@@ -32,8 +32,7 @@ import { Material } from '../../assets/material';
 import { Mesh } from '../../assets/mesh';
 import { ccclass, help, executeInEditMode, executionOrder, menu, property, tooltip, visible, type, formerlySerializedAs } from '../../data/class-decorator';
 import { Vec4 } from '../../math';
-import { Model } from '../../renderer/scene/model';
-import { MorphModel } from '../../renderer/models/morph-model';
+import { scene, models } from '../../renderer';
 import { Root } from '../../root';
 import { TransformBit } from '../../scene-graph/node-enum';
 import { Enum } from '../../value-types';
@@ -248,9 +247,9 @@ export class ModelComponent extends RenderableComponent {
         this._enableMorph = value;
     }
 
-    protected _modelType: typeof Model;
+    protected _modelType: typeof scene.Model;
 
-    protected _model: Model | null = null;
+    protected _model: scene.Model | null = null;
 
     private _morphInstance: MorphRenderingInstance | null = null;
 
@@ -259,7 +258,7 @@ export class ModelComponent extends RenderableComponent {
 
     constructor () {
         super();
-        this._modelType = Model;
+        this._modelType = scene.Model;
     }
 
     public onLoad () {
@@ -351,13 +350,13 @@ export class ModelComponent extends RenderableComponent {
         // Please notice that we do not enforce that
         // derived classes should use a morph-able model type(i.e. model type derived from `MorphModel`).
         // So we should take care of the edge case.
-        const modelType = (preferMorphOverPlain && this._modelType === Model) ? MorphModel : this._modelType;
+        const modelType = (preferMorphOverPlain && this._modelType === scene.Model) ? models.MorphModel : this._modelType;
         this._model = (legacyCC.director.root as Root).createModel(modelType);
         this._model.visFlags = this.visibility;
         this._model.initialize(this.node);
         this._models.length = 0;
         this._models.push(this._model);
-        if (this._morphInstance && this._model instanceof MorphModel) {
+        if (this._morphInstance && this._model instanceof models.MorphModel) {
             this._model.setMorphRendering(this._morphInstance);
         }
     }
@@ -509,7 +508,7 @@ export class ModelComponent extends RenderableComponent {
             this._morphInstance.setWeights(iSubMesh, weights);
         }
 
-        if (this._model && this._model instanceof MorphModel) {
+        if (this._model && this._model instanceof models.MorphModel) {
             this._model.setMorphRendering(this._morphInstance);
         }
     }
