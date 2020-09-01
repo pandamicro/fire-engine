@@ -27,7 +27,7 @@
  * @category animation
  */
 
-import { SkinningModelComponent } from '../3d/framework/skinning-model-component';
+import { SkinningModel } from '../3d/framework/skinning-model-component';
 import { ccclass, executeInEditMode, executionOrder, help, menu, property, tooltip, type } from '../data/class-decorator';
 import { Mat4 } from '../math';
 import { DataPoolManager } from '../renderer/data-pool-manager';
@@ -134,7 +134,7 @@ export class SkeletalAnimation extends Animation {
     }
     set useBakedAnimation (val) {
         this._useBakedAnimation = val;
-        const comps = this.node.getComponentsInChildren(SkinningModelComponent);
+        const comps = this.node.getComponentsInChildren(SkinningModel);
         for (let i = 0; i < comps.length; ++i) {
             const comp = comps[i];
             if (comp.skinningRoot === this.node) {
