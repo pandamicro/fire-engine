@@ -4,7 +4,7 @@
 
 import { ccclass, property, requireComponent, displayOrder, type, readOnly } from '../../../../core/data/class-decorator';
 import { Component } from '../../../../core';
-import { RigidBody } from '../rigid-body-component';
+import { RigidBody } from '../rigid-body';
 import { Eventify } from '../../../../core/event';
 import { IBaseConstraint } from '../../../spec/i-physics-constraint';
 import { EDITOR } from 'internal:constants';

@@ -10,7 +10,7 @@ import {
     property,
     type,
 } from '../../../../core/data/class-decorator';
-import { Collider } from './collider-component';
+import { Collider } from './collider';
 import { Mesh } from '../../../../core';
 import { ITrimeshShape } from '../../../spec/i-physics-shape';
 import { EDITOR, TEST } from 'internal:constants';

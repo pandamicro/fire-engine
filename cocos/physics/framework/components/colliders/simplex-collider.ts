@@ -12,7 +12,7 @@ import {
     type,
 } from '../../../../core/data/class-decorator';
 import { Vec3 } from '../../../../core/math';
-import { Collider } from './collider-component';
+import { Collider } from './collider';
 import { ISimplexShape } from '../../../spec/i-physics-shape';
 import { EDITOR, TEST } from 'internal:constants';
 import { ESimplexType, EColliderType } from '../../physics-enum';

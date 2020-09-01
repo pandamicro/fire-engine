@@ -11,31 +11,31 @@ import {
     tooltip,
     type,
 } from '../../../../core/data/class-decorator';
-import { Collider } from './collider-component';
-import { ICylinderShape } from '../../../spec/i-physics-shape';
+import { Collider } from './collider';
+import { IConeShape } from '../../../spec/i-physics-shape';
 import { EDITOR, TEST } from 'internal:constants';
 import { EAxisDirection, EColliderType } from '../../physics-enum';
 
 /**
  * @en
- * Cylinder collider component.
+ * Cone collider component.
  * @zh
- * 圆柱体碰撞器。
+ * 圆锥体碰撞器。
  */
-@ccclass('cc.CylinderCollider')
-@help('i18n:cc.CylinderCollider')
-@menu('Physics/CylinderCollider')
+@ccclass('cc.ConeCollider')
+@help('i18n:cc.ConeCollider')
+@menu('Physics/ConeCollider(beta)')
 @executeInEditMode
-export class CylinderCollider extends Collider {
+export class ConeCollider extends Collider {
     /// PUBLIC PROPERTY GETTER\SETTER ///
 
     /**
      * @en
-     * Gets or sets the radius of the circle on the cylinder body, in local space.
+     * Gets or sets the radius of the circle on the cone body, in local space.
      * @zh
-     * 获取或设置圆柱体上圆面半径。
+     * 获取或设置圆锥体上圆面半径。
      */
-    @tooltip('圆柱体上圆面的半径')
+    @tooltip('圆锥体上圆面的半径')
     public get radius () {
         return this._radius;
     }
@@ -51,11 +51,11 @@ export class CylinderCollider extends Collider {
 
     /**
      * @en
-     * Gets or sets the cylinder body is at the corresponding axial height, in local space.
+     * Gets or sets the cone body is at the corresponding axial height, in local space.
      * @zh
-     * 获取或设置圆柱体在相应轴向的高度。
+     * 获取或设置圆锥体在相应轴向的高度。
      */
-    @tooltip('圆柱体在相应轴向的高度')
+    @tooltip('圆锥体在相应轴向的高度')
     public get height () {
         return this._height;
     }
@@ -71,9 +71,9 @@ export class CylinderCollider extends Collider {
 
     /**
      * @en
-     * Gets or sets the cylinder direction, in local space.
+     * Gets or sets the cone direction, in local space.
      * @zh
-     * 获取或设置在圆柱体本地空间上的方向。
+     * 获取或设置在圆锥体本地空间上的方向。
      */
     @type(EAxisDirection)
     public get direction () {
@@ -90,7 +90,7 @@ export class CylinderCollider extends Collider {
     }
 
     public get shape () {
-        return this._shape as ICylinderShape;
+        return this._shape as IConeShape;
     }
 
     /// PRIVATE PROPERTY ///
@@ -99,14 +99,12 @@ export class CylinderCollider extends Collider {
     private _radius = 0.5;
 
     @property
-    private _height = 2;
+    private _height = 1;
 
     @property
     private _direction = EAxisDirection.Y_AXIS;
 
     constructor () {
-        super(EColliderType.CYLINDER);
+        super(EColliderType.CONE);
     }
 }
-
-export { CylinderCollider as CylinderColliderComponent };

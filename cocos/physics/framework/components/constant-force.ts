@@ -14,7 +14,7 @@ import {
     displayOrder,
 } from '../../../core/data/class-decorator';
 import { Component } from '../../../core/components/component';
-import { RigidBody } from './rigid-body-component';
+import { RigidBody } from './rigid-body';
 import { Vec3 } from '../../../core/math/vec3';
 import { EDITOR } from 'internal:constants';
 

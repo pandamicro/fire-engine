@@ -10,7 +10,7 @@ import {
     property,
     tooltip,
 } from '../../../../core/data/class-decorator';
-import { Collider } from './collider-component';
+import { Collider } from './collider';
 import { ISphereShape } from '../../../spec/i-physics-shape';
 import { EDITOR, TEST } from 'internal:constants';
 import { EColliderType } from '../../physics-enum';
