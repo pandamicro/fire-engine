@@ -41,6 +41,7 @@ import { RenderableComponent } from './renderable-component';
 import { MorphRenderingInstance } from '../../assets/morph';
 import { legacyCC } from '../../global-exports';
 import { assertIsTrue } from '../../data/utils/asserts';
+import { js } from 'cocos/core/utils/js';
 
 /**
  * @en Shadow projection mode.
@@ -530,4 +531,9 @@ export declare namespace MeshRenderer {
     export type ShadowReceivingMode = EnumAlias<typeof ModelShadowReceivingMode>;
 }
 
+/**
+ * Alias of `MeshRenderer`.
+ * @deprecated Since 1.2. Use `MeshRenderer` instead.
+ */
 export { MeshRenderer as ModelComponent };
+js.setClassAlias(MeshRenderer, 'cc.ModelComponent');

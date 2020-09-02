@@ -427,8 +427,8 @@ function isTempClassId (id) {
 }
 
 // id 注册
-export const _idToClass = {};
-export const _nameToClass = {};
+export const _idToClass: Record<string, Function> = {};
+export const _nameToClass: Record<string, Function> = {};
 
 /**
  * Register the class by specified id, if its classname is not defined, the class name will also be set.
@@ -512,6 +512,42 @@ export function setClassName (className, constructor) {
     }
 }
 
+const aliasesPropertyKey = typeof Symbol === 'undefined' ? '' : Symbol('[[Aliases]]');
+
+/**
+ * @en
+ * @zh
+ * 为类设置别名。
+ * 当 `setClassAlias(target, alias)` 后，以下条件将成立：
+ * - `_getClassById(alias) === target`
+ * - `getClassByName(alias) === target`
+ * @param target Constructor of target class.
+ * @param alias Alias to set. The name shall not been class name or alias as another class.
+ */
+export function setClassAlias (target: Function, alias: string) {
+    const nameRegistry = _nameToClass[alias];
+    const idRegistry = _idToClass[alias];
+    let ok = true;
+    if (nameRegistry !== target) {
+        error(`"${alias}" has already been set as name or alias of another class.`);
+        ok = false;
+    }
+    if (idRegistry !== target) {
+        error(`"${alias}" has already been set as id or alias of another class.`);
+        ok = false;
+    }
+    if (ok) {
+        let classAliases = target[aliasesPropertyKey];
+        if (!classAliases) {
+            classAliases = [];
+            target[aliasesPropertyKey] = classAliases;
+        }
+        classAliases.push(alias);
+        _nameToClass[alias] = target;
+        _idToClass[alias] = target;
+    }
+}
+
 /**
  * Unregister a class from fireball.
  *
@@ -531,6 +567,14 @@ export function unregisterClass (...constructors: Function[]) {
         const classname = p.__classname__;
         if (classname) {
             delete _nameToClass[classname];
+        }
+        const aliases = p[aliasesPropertyKey];
+        if (aliases) {
+            for (let iAlias = 0; iAlias < aliases.length; ++iAlias) {
+                const alias = aliases[iAlias];
+                delete _nameToClass[alias];
+                delete _idToClass[alias];
+            }
         }
     }
 }
