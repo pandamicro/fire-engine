@@ -4,6 +4,10 @@ import IDGenerator from './id-generator';
 import { EDITOR, DEV, TEST } from 'internal:constants';
 const tempCIDGenerator = new IDGenerator('TmpCId.');
 
+const aliasesTag = typeof Symbol === 'undefined' ? '__aliases__' : Symbol('[[Aliases]]');
+const classNameTag = '__classname__';
+const classIdTag = '__cid__';
+
 /**
  * Check the object whether is number or not
  * If a number is created by using 'new Number(10086)', the typeof it will be "object"...
@@ -147,8 +151,8 @@ export function createMap (forceDictMode?: boolean) {
 export function getClassName (objOrCtor: Object | Function): string {
     if (typeof objOrCtor === 'function') {
         const prototype = objOrCtor.prototype;
-        if (prototype && prototype.hasOwnProperty('__classname__') && prototype.__classname__) {
-            return prototype.__classname__;
+        if (prototype && prototype.hasOwnProperty(classNameTag) && prototype[classNameTag]) {
+            return prototype[classNameTag];
         }
         let retval = '';
         //  for browsers which have name property in the constructor of the object, such as chrome
@@ -438,18 +442,17 @@ export const _nameToClass: Record<string, Function> = {};
  * @private
  */
 export function _setClassId (id, constructor) {
-    const key = '__cid__';
     const table = _idToClass;
     // deregister old
-    if (constructor.prototype.hasOwnProperty(key)) {
-        delete table[constructor.prototype[key]];
+    if (constructor.prototype.hasOwnProperty(classIdTag)) {
+        delete table[constructor.prototype[classIdTag]];
     }
-    value(constructor.prototype, key, id);
+    value(constructor.prototype, classIdTag, id);
     // register class
     if (id) {
         const registered = table[id];
         if (registered && registered !== constructor) {
-            let err = 'A Class already exists with the same ' + key + ' : "' + id + '".';
+            let err = 'A Class already exists with the same ' + classIdTag + ' : "' + id + '".';
             if (TEST) {
                 err += ' (This may be caused by error of unit test.) \
 If you dont need serialization, you can set class id to "". You can also call \
@@ -467,18 +470,17 @@ js.unregisterClass to remove the id of unused class';
 }
 
 function doSetClassName (id, constructor) {
-    const key = '__classname__';
     const table = _nameToClass;
     // deregister old
-    if (constructor.prototype.hasOwnProperty(key)) {
-        delete table[constructor.prototype[key]];
+    if (constructor.prototype.hasOwnProperty(classNameTag)) {
+        delete table[constructor.prototype[classNameTag]];
     }
-    value(constructor.prototype, key, id);
+    value(constructor.prototype, classNameTag, id);
     // register class
     if (id) {
         const registered = table[id];
         if (registered && registered !== constructor) {
-            let err = 'A Class already exists with the same ' + key + ' : "' + id + '".';
+            let err = 'A Class already exists with the same ' + classNameTag + ' : "' + id + '".';
             if (TEST) {
                 err += ' (This may be caused by error of unit test.) \
 If you dont need serialization, you can set class id to "". You can also call \
@@ -504,15 +506,13 @@ js.unregisterClass to remove the id of unused class';
 export function setClassName (className, constructor) {
     doSetClassName(className, constructor);
     // auto set class id
-    if (!constructor.prototype.hasOwnProperty('__cid__')) {
+    if (!constructor.prototype.hasOwnProperty(classIdTag)) {
         const id = className || tempCIDGenerator.getNewId();
         if (id) {
             _setClassId(id, constructor);
         }
     }
 }
-
-const aliasesTag = typeof Symbol === 'undefined' ? '__aliases__' : Symbol('[[Aliases]]');
 
 /**
  * @en
@@ -561,11 +561,11 @@ export function setClassAlias (target: Function, alias: string) {
 export function unregisterClass (...constructors: Function[]) {
     for (const constructor of constructors) {
         const p = constructor.prototype;
-        const classId = p.__cid__;
+        const classId = p[classIdTag];
         if (classId) {
             delete _idToClass[classId];
         }
-        const classname = p.__classname__;
+        const classname = p[classIdTag];
         if (classname) {
             delete _nameToClass[classname];
         }
@@ -613,8 +613,8 @@ export function _getClassId (obj, allowTempId?: Boolean) {
     allowTempId = (typeof allowTempId !== 'undefined' ? allowTempId : true);
 
     let res;
-    if (typeof obj === 'function' && obj.prototype.hasOwnProperty('__cid__')) {
-        res = obj.prototype.__cid__;
+    if (typeof obj === 'function' && obj.prototype.hasOwnProperty(classIdTag)) {
+        res = obj.prototype[classIdTag];
         if (!allowTempId && (DEV || EDITOR) && isTempClassId(res)) {
             return '';
         }
@@ -622,8 +622,8 @@ export function _getClassId (obj, allowTempId?: Boolean) {
     }
     if (obj && obj.constructor) {
         const prototype = obj.constructor.prototype;
-        if (prototype && prototype.hasOwnProperty('__cid__')) {
-            res = obj.__cid__;
+        if (prototype && prototype.hasOwnProperty(classIdTag)) {
+            res = obj[classIdTag];
             if (!allowTempId && (DEV || EDITOR) && isTempClassId(res)) {
                 return '';
             }
