@@ -512,7 +512,7 @@ export function setClassName (className, constructor) {
     }
 }
 
-const aliasesPropertyKey = typeof Symbol === 'undefined' ? '__aliases__' : Symbol('[[Aliases]]');
+const aliasesTag = typeof Symbol === 'undefined' ? '__aliases__' : Symbol('[[Aliases]]');
 
 /**
  * @en
@@ -538,10 +538,10 @@ export function setClassAlias (target: Function, alias: string) {
         ok = false;
     }
     if (ok) {
-        let classAliases = target[aliasesPropertyKey];
+        let classAliases = target[aliasesTag];
         if (!classAliases) {
             classAliases = [];
-            target[aliasesPropertyKey] = classAliases;
+            target[aliasesTag] = classAliases;
         }
         classAliases.push(alias);
         _nameToClass[alias] = target;
@@ -569,7 +569,7 @@ export function unregisterClass (...constructors: Function[]) {
         if (classname) {
             delete _nameToClass[classname];
         }
-        const aliases = p[aliasesPropertyKey];
+        const aliases = p[aliasesTag];
         if (aliases) {
             for (let iAlias = 0; iAlias < aliases.length; ++iAlias) {
                 const alias = aliases[iAlias];
