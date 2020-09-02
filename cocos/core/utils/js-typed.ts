@@ -523,7 +523,7 @@ export function setClassName (className, constructor) {
  * 因此，`_getClassById(alias)` 和 `getClassByName(alias)` 都会得到 `target`。
  * 这种映射是单向的，意味着 `getClassName(target)` 和 `_getClassId(target)` 将不会是 `alias`。
  * @param target Constructor of target class.
- * @param alias Alias to set. The name shall not been class name or alias as another class.
+ * @param alias Alias to set. The name shall not have been set as class name or alias of another class.
  */
 export function setClassAlias (target: Function, alias: string) {
     const nameRegistry = _nameToClass[alias];
