@@ -512,7 +512,7 @@ export function setClassName (className, constructor) {
     }
 }
 
-const aliasesPropertyKey = typeof Symbol === 'undefined' ? '' : Symbol('[[Aliases]]');
+const aliasesPropertyKey = typeof Symbol === 'undefined' ? '__aliases__' : Symbol('[[Aliases]]');
 
 /**
  * @en
