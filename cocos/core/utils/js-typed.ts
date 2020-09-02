@@ -518,9 +518,10 @@ const aliasesPropertyKey = typeof Symbol === 'undefined' ? '' : Symbol('[[Aliase
  * @en
  * @zh
  * 为类设置别名。
- * 当 `setClassAlias(target, alias)` 后，以下条件将成立：
- * - `_getClassById(alias) === target`
- * - `getClassByName(alias) === target`
+ * 当 `setClassAlias(target, alias)` 后，
+ * `alias` 将作为类 `target`的“单向 ID” 和“单向名称”。
+ * 因此，`_getClassById(alias)` 和 `getClassByName(alias)` 都会得到 `target`。
+ * 这种映射是单向的，意味着 `getClassName(target)` 和 `_getClassId(target)` 将不会是 `alias`。
  * @param target Constructor of target class.
  * @param alias Alias to set. The name shall not been class name or alias as another class.
  */
